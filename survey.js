@@ -105,10 +105,32 @@
       return { preview: true };
     }
 
+    const dbPayload = {
+      lead_id: payload.lead_id || null,
+      nombre: payload.nombre || null,
+      tratamiento: payload.tratamiento,
+      experiencia: payload.experiencia,
+      nps: payload.nps,
+      comentario: payload.comentario || null,
+      alerta: !!payload.alerta,
+      respuestas: payload.respuestas || {},
+      origen: payload.origen || 'kommo',
+      enviado_en: payload.enviado || new Date().toISOString()
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    };
+    if (CONFIG.supabaseAnonKey) {
+      headers.apikey = CONFIG.supabaseAnonKey;
+      headers.Authorization = 'Bearer ' + CONFIG.supabaseAnonKey;
+    }
+
     const r = await fetch(CONFIG.submitUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      headers,
+      body: JSON.stringify(dbPayload)
     });
 
     if (!r.ok) throw new Error('No se pudo registrar la respuesta');
