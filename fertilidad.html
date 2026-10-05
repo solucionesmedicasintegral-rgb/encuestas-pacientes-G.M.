@@ -93,7 +93,8 @@
 <script>
 window.SURVEY_CONFIG = {
   tratamiento: 'fertilidad',
-  submitUrl: '',
+  submitUrl: 'https://lzjpxumivquajfunpuwg.supabase.co/rest/v1/encuestas_gabriel',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6anB4dW1pdnF1YWpmdW5wdXdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMzcxNTUsImV4cCI6MjEwNTcxMzE1NX0.zhnwLkoblkVb7UVgF2Bcwm5vsxRPFUez3rIhFj-zWkk',
   googleReviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJ0_7BGNCvKIQR3kuCuLhaA7U',
   logoUrl: '',
   alertWhen: (r) =>
@@ -104,6 +105,6 @@ window.SURVEY_CONFIG = {
     (r.recomendacion !== undefined && r.recomendacion <= 6)
 };
 </script>
-<script src="survey.js"></script>
+<script src="survey.js?v=2"></script>
 </body>
 </html>
