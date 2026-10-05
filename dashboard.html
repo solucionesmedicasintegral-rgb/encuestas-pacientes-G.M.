@@ -5,33 +5,41 @@
 <title>Dashboard Encuestas · Dr. Gabriel Morales</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body{font-family:Arial,sans-serif;margin:0;background:#f7f3f5;color:#2b2430}.w{max-width:1100px;margin:auto;padding:24px}.c{background:#fff;border:1px solid #eadfe6;border-radius:16px;padding:16px;margin-bottom:16px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.v{font-size:28px;font-weight:700}.mut{color:#766b77}.hide{display:none}.login{max-width:430px;margin:12vh auto}input,select,button{padding:11px;border-radius:10px;border:1px solid #d8cbd3;font:inherit}button{background:#7a2e63;color:#fff;border:0;font-weight:700;cursor:pointer}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:14px}.tw{overflow:auto}@media(max-width:800px){.g{grid-template-columns:1fr 1fr}table{min-width:850px}}
+body{font-family:Arial,sans-serif;margin:0;background:#f7f3f5;color:#2b2430}.w{max-width:1180px;margin:auto;padding:24px}.c{background:#fff;border:1px solid #eadfe6;border-radius:16px;padding:16px;margin-bottom:16px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.v{font-size:28px;font-weight:700}.mut{color:#766b77}.hide{display:none}.login{max-width:430px;margin:12vh auto}input,select,button{padding:11px;border-radius:10px;border:1px solid #d8cbd3;font:inherit}button{background:#7a2e63;color:#fff;border:0;font-weight:700;cursor:pointer}.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:14px}.tw{overflow:auto}.namebtn{background:none;color:#7a2e63;padding:0;border:0;font-weight:700;text-decoration:underline}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#f1e7ed}.ok{background:#e8f5ed;color:#21653b}.warn{background:#fdeaea;color:#9b2323}.modal{position:fixed;inset:0;background:rgba(30,20,27,.48);display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}.box{background:#fff;border-radius:18px;max-width:720px;width:100%;max-height:85vh;overflow:auto;padding:22px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center}.close{background:#eee;color:#333}.detail{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{background:#faf7f9;border:1px solid #eee1e8;border-radius:12px;padding:12px}.item b{display:block;margin-bottom:5px}@media(max-width:800px){.g{grid-template-columns:1fr 1fr}.detail{grid-template-columns:1fr}table{min-width:900px}}
 </style>
 </head><body><div class="w">
 <section id="login" class="c login">
-<h2>Dashboard de encuestas</h2>
-<p class="mut">Acceso autorizado para Soluciones Médicas Integral</p>
+<h2>Dashboard de encuestas</h2><p class="mut">Acceso autorizado para Soluciones Médicas Integral</p>
 <input id="email" type="email" value="solucionesmedicasintegral@gmail.com" readonly style="width:100%;box-sizing:border-box">
-<button id="send" style="width:100%;margin-top:10px">Enviar enlace de acceso</button>
-<p id="msg" class="mut"></p>
+<button id="send" style="width:100%;margin-top:10px">Enviar enlace de acceso</button><p id="msg" class="mut"></p>
 </section>
 <main id="panel" class="hide">
-<div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><h1>Experiencia de pacientes</h1><button id="out">Salir</button></div>
+<div class="top"><h1>Experiencia de pacientes</h1><button id="out">Salir</button></div>
 <div class="g">
 <div class="c"><div class="mut">Respuestas</div><div id="t" class="v">0</div></div>
 <div class="c"><div class="mut">Experiencia</div><div id="x" class="v">—</div></div>
 <div class="c"><div class="mut">NPS</div><div id="n" class="v">—</div></div>
 <div class="c"><div class="mut">Alertas</div><div id="a" class="v">0</div></div>
 </div>
-<div class="c"><select id="f"><option value="">Todos</option><option value="labioplastia">Labioplastia</option><option value="fertilidad">Fertilidad</option></select>
-<div class="tw"><table><thead><tr><th>Fecha</th><th>Paciente</th><th>Tratamiento</th><th>Experiencia</th><th>NPS</th><th>Alerta</th><th>Comentario</th></tr></thead><tbody id="r"></tbody></table></div></div>
-</main></div>
+<div class="c">
+<div class="filters">
+<select id="f"><option value="">Todos los tratamientos</option><option value="labioplastia">Labioplastia</option><option value="fertilidad">Fertilidad</option></select>
+<select id="fa"><option value="">Todas las respuestas</option><option value="1">Solo alertas</option><option value="0">Sin alerta</option></select>
+</div>
+<div class="tw"><table><thead><tr><th>Fecha</th><th>Paciente</th><th>Tratamiento</th><th>Experiencia</th><th>NPS</th><th>Alerta</th><th>Comentario</th></tr></thead><tbody id="r"></tbody></table></div>
+</div></main></div>
+
+<div id="modal" class="modal hide"><div class="box"><div class="top"><div><h2 id="mname" style="margin:0"></h2><div id="mmeta" class="mut"></div></div><button id="close" class="close">Cerrar</button></div><hr style="border:0;border-top:1px solid #eee;margin:18px 0"><div id="mdetail" class="detail"></div></div></div>
+
 <script>
 const sb=supabase.createClient('https://lzjpxumivquajfunpuwg.supabase.co','sb_publishable_eoAAJrO5V-S0Yn7BNrHXsw_hvHdjNZN');
 const q=i=>document.getElementById(i),esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 let D=[];
-function render(){const f=q('f').value,d=D.filter(x=>!f||x.tratamiento===f);q('t').textContent=d.length;const ex=d.map(x=>Number(x.experiencia)).filter(Number.isFinite);q('x').textContent=ex.length?(ex.reduce((a,b)=>a+b,0)/ex.length).toFixed(1)+'/5':'—';const ns=d.map(x=>Number(x.nps)).filter(Number.isFinite);q('n').textContent=ns.length?Math.round(ns.filter(v=>v>=9).length/ns.length*100-ns.filter(v=>v<=6).length/ns.length*100):'—';q('a').textContent=d.filter(x=>x.alerta).length;q('r').innerHTML=d.map(x=>'<tr><td>'+esc(new Date(x.created_at).toLocaleString('es-MX'))+'</td><td>'+esc(x.nombre||'—')+'</td><td>'+esc(x.tratamiento||'—')+'</td><td>'+esc(x.experiencia??'—')+'</td><td>'+esc(x.nps??'—')+'</td><td>'+(x.alerta?'Revisar':'OK')+'</td><td>'+esc(x.comentario||'—')+'</td></tr>').join('')}
-async function load(){const {data:{session}}=await sb.auth.getSession();if(!session)return;q('login').classList.add('hide');q('panel').classList.remove('hide');const {data,error}=await sb.from('encuestas_gabriel').select('created_at,nombre,tratamiento,experiencia,nps,alerta,comentario').order('created_at',{ascending:false});if(error){q('panel').innerHTML='<div class="c">No se pudieron cargar los datos.</div>';return}D=data||[];render()}
+const labels={experiencia:'Experiencia general',confianza:'Confianza y escucha',informacion:'Claridad de la información',recuperacion:'Recuperación',equipo:'Atención del equipo',seguimiento:'Seguimiento del equipo',dudas:'Dudas resueltas',recomendacion:'Qué tanto recomendaría',comentario:'Comentario'};
+function filtered(){return D.filter(x=>(!q('f').value||x.tratamiento===q('f').value)&&(!q('fa').value||String(Number(!!x.alerta))===q('fa').value))}
+function render(){const d=filtered();q('t').textContent=d.length;const ex=d.map(x=>Number(x.experiencia)).filter(Number.isFinite);q('x').textContent=ex.length?(ex.reduce((a,b)=>a+b,0)/ex.length).toFixed(1)+'/5':'—';const ns=d.map(x=>Number(x.nps)).filter(Number.isFinite);q('n').textContent=ns.length?Math.round(ns.filter(v=>v>=9).length/ns.length*100-ns.filter(v=>v<=6).length/ns.length*100):'—';q('a').textContent=d.filter(x=>x.alerta).length;q('r').innerHTML=d.map((x,i)=>'<tr><td>'+esc(new Date(x.created_at).toLocaleString('es-MX'))+'</td><td><button class="namebtn" data-id="'+esc(x.id)+'">'+esc(x.nombre||'—')+'</button></td><td>'+esc(x.tratamiento||'—')+'</td><td>'+esc(x.experiencia??'—')+'</td><td>'+esc(x.nps??'—')+'</td><td>'+(x.alerta?'<span class="badge warn">Revisar</span>':'<span class="badge ok">OK</span>')+'</td><td>'+esc(x.comentario||'—')+'</td></tr>').join('');document.querySelectorAll('.namebtn').forEach(b=>b.onclick=()=>detail(b.dataset.id))}
+function detail(id){const x=D.find(v=>String(v.id)===String(id));if(!x)return;q('mname').textContent=x.nombre||'Paciente';q('mmeta').textContent=(x.tratamiento||'')+' · '+new Date(x.created_at).toLocaleString('es-MX');const r=x.respuestas||{};const entries=Object.entries(r).filter(([k])=>k!=='comentario');q('mdetail').innerHTML=entries.map(([k,v])=>'<div class="item"><b>'+esc(labels[k]||k)+'</b>'+esc(Array.isArray(v)?v.join(', '):v)+'</div>').join('')+'<div class="item" style="grid-column:1/-1"><b>Comentario</b>'+esc(x.comentario||r.comentario||'Sin comentario')+'</div>';q('modal').classList.remove('hide')}
+async function load(){const {data:{session}}=await sb.auth.getSession();if(!session)return;q('login').classList.add('hide');q('panel').classList.remove('hide');const {data,error}=await sb.from('encuestas_gabriel').select('id,created_at,nombre,tratamiento,experiencia,nps,alerta,comentario,respuestas').order('created_at',{ascending:false});if(error){q('panel').innerHTML='<div class="c">No se pudieron cargar los datos.</div>';return}D=data||[];render()}
 q('send').onclick=async()=>{q('msg').textContent='Enviando…';const {error}=await sb.auth.signInWithOtp({email:'solucionesmedicasintegral@gmail.com',options:{emailRedirectTo:location.origin+location.pathname}});q('msg').textContent=error?'No se pudo enviar el enlace: '+error.message:'Listo. Revisa el correo y abre el enlace de acceso.'};
-q('f').onchange=render;q('out').onclick=async()=>{await sb.auth.signOut();location.reload()};sb.auth.onAuthStateChange(()=>load());load();
+q('f').onchange=render;q('fa').onchange=render;q('close').onclick=()=>q('modal').classList.add('hide');q('modal').onclick=e=>{if(e.target===q('modal'))q('modal').classList.add('hide')};q('out').onclick=async()=>{await sb.auth.signOut();location.reload()};sb.auth.onAuthStateChange(()=>load());load();
 </script></body></html>
