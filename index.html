@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Encuestas · Dr. Gabriel Morales</title>
+<title>Tu experiencia · Dr. Gabriel Morales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -12,26 +12,40 @@
 <main class="app home">
   <header>
     <div class="marca">Dr. Gabriel Morales</div>
-    <div class="espec">Encuestas de experiencia</div>
+    <div class="espec">Encuesta de experiencia</div>
   </header>
-  <h1>Selecciona una encuesta</h1>
-  <p class="intro">Panel técnico para probar los dos flujos antes de conectarlos con Kommo y Supabase.</p>
+
+  <h1 id="titulo">Queremos conocer tu experiencia</h1>
+  <p class="intro">Selecciona el procedimiento o proceso en el que te atendimos. La encuesta es breve y nos ayuda a seguir mejorando nuestra atención.</p>
 
   <section class="home-card">
     <span class="badge">Post procedimiento</span>
     <h2>Labioplastia</h2>
-    <p>Experiencia, confianza, recuperación, atención del equipo y recomendación.</p>
-    <a class="btn" href="labioplastia.html?n=Prueba&lead=123">Abrir encuesta</a>
+    <p>Cuéntanos cómo fue tu experiencia, recuperación y atención por parte del equipo.</p>
+    <a class="btn" id="labio" href="labioplastia.html">Responder encuesta</a>
   </section>
 
   <section class="home-card">
     <span class="badge">Acompañamiento</span>
     <h2>Fertilidad</h2>
-    <p>Experiencia, acompañamiento, claridad, seguimiento, resolución de dudas y recomendación.</p>
-    <a class="btn" href="fertilidad.html?n=Prueba&lead=456">Abrir encuesta</a>
+    <p>Cuéntanos cómo fue tu experiencia, acompañamiento, claridad y seguimiento durante tu proceso.</p>
+    <a class="btn" id="fert" href="fertilidad.html">Responder encuesta</a>
   </section>
 
-  <footer>Proyecto interno · Soluciones Médicas Integral</footer>
+  <footer>Gracias por tu confianza · Dr. Gabriel Morales</footer>
 </main>
+
+<script>
+const p=new URLSearchParams(location.search);
+const n=p.get('n')||'';
+const lead=p.get('lead')||'';
+if(n) document.getElementById('titulo').textContent='Hola '+n+', queremos conocer tu experiencia';
+const qs=new URLSearchParams();
+if(n) qs.set('n',n);
+if(lead) qs.set('lead',lead);
+const suffix=qs.toString()?'?'+qs.toString():'';
+document.getElementById('labio').href='labioplastia.html'+suffix;
+document.getElementById('fert').href='fertilidad.html'+suffix;
+</script>
 </body>
 </html>
