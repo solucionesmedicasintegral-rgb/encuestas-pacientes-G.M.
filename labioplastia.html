@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tu experiencia · Dr. Gabriel Morales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+<header>
+  <img class="logo" id="logo" alt="" hidden>
+  <div class="marca">Dr. Gabriel Morales</div>
+  <div class="espec">Ginecología y Obstetricia</div>
+</header>
+<div class="barra" id="barra"><i></i></div>
+
+<section class="paso activo" data-paso="0">
+  <h1 id="saludo">Hola, nos encantaría saber cómo te fue</h1>
+  <p class="intro">Son 6 preguntas rápidas y toma alrededor de un minuto. Tus respuestas son confidenciales y las revisa el equipo del Dr. Gabriel.</p>
+  <div class="acciones"><button class="btn" data-sig>Comenzar</button></div>
+</section>
+
+<section class="paso" data-paso="1" data-campo="experiencia" data-tipo="estrellas">
+  <div class="num">Pregunta 1 de 6</div>
+  <h2>¿Cómo calificarías tu experiencia general con el Dr. Gabriel?</h2>
+  <div class="estrellas"></div><div class="etq"></div>
+  <div class="acciones"><button class="btn sec" data-ant>Atrás</button><button class="btn" data-sig disabled>Siguiente</button></div>
+</section>
+
+<section class="paso" data-paso="2" data-campo="confianza" data-tipo="opciones">
+  <div class="num">Pregunta 2 de 6</div>
+  <h2>¿Te sentiste escuchada y en confianza durante tu valoración y proceso?</h2>
+  <div class="opciones" data-ops="Sí, totalmente|En parte|No"></div>
+  <div class="acciones"><button class="btn sec" data-ant>Atrás</button><button class="btn" data-sig disabled>Siguiente</button></div>
+</section>
+
+<section class="paso" data-paso="3" data-campo="informacion" data-tipo="opciones">
+  <div class="num">Pregunta 3 de 6</div>
+  <h2>¿Recibiste información clara sobre el procedimiento, los cuidados y la recuperación?</h2>
+  <div class="opciones" data-ops="Sí, muy clara|Más o menos|No"></div>
+  <div class="acciones"><button class="btn sec" data-ant>Atrás</button><button class="btn" data-sig disabled>Siguiente</button></div>
+</section>
+
+<section class="paso" data-paso="4" data-campo="recuperacion" data-tipo="opciones">
+  <div class="num">Pregunta 4 de 6</div>
+  <h2>¿Cómo va tu recuperación?</h2>
+  <div class="opciones" data-ops="Muy bien|Bien|Tengo algunas molestias|Me gustaría que me contactaran"></div>
+  <div class="acciones"><button class="btn sec" data-ant>Atrás</button><button class="btn" data-sig disabled>Siguiente</button></div>
+</section>
+
+<section class="paso" data-paso="5" data-campo="equipo" data-tipo="estrellas">
+  <div class="num">Pregunta 5 de 6</div>
+  <h2>¿Cómo calificarías la atención del equipo? (WhatsApp, recepción y citas)</h2>
+  <div class="estrellas"></div><div class="etq"></div>
+  <div class="acciones"><button class="btn sec" data-ant>Atrás</button><button class="btn" data-sig disabled>Siguiente</button></div>
+</section>
+
+<section class="paso" data-paso="6" data-campo="recomendacion" data-tipo="nps">
+  <div class="num">Pregunta 6 de 6</div>
+  <h2>Del 0 al 10, ¿qué tan probable es que recomiendes al Dr. Gabriel a una amiga?</h2>
+  <div class="nps"></div>
+  <div class="nps-ley"><span>Nada probable</span><span>Muy probable</span></div>
+  <div class="acciones"><button class="btn sec" data-ant>Atrás</button><button class="btn" data-sig disabled>Siguiente</button></div>
+</section>
+
+<section class="paso" data-paso="7" data-campo="comentario" data-tipo="texto">
+  <div class="num">Opcional</div>
+  <h2>¿Qué fue lo que más te gustó, o qué podríamos mejorar?</h2>
+  <textarea id="comentario" placeholder="Escribe aquí si quieres compartir algo más…"></textarea>
+  <div class="acciones"><button class="btn sec" data-ant>Atrás</button><button class="btn" id="enviar">Finalizar</button></div>
+</section>
+
+<section class="paso fin" data-paso="8">
+  <div class="corazon">💜</div>
+  <h1 id="gracias">¡Gracias por tu tiempo!</h1>
+  <p class="intro" style="margin-bottom:0">Tu opinión nos ayuda a seguir cuidando cada detalle.</p>
+  <div class="aviso" id="avisoContacto" hidden>Alguien del equipo del Dr. Gabriel revisará tu respuesta para dar seguimiento.</div>
+  <div class="estado" id="estadoEnvio" hidden></div>
+  <p style="margin-top:26px">Tu experiencia puede ayudar a otras pacientes a tomar una decisión informada.</p>
+  <a class="btn google" id="btnGoogle" target="_blank" rel="noopener">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.1 5.5c4.2-3.9 7.2-9.6 7.2-16.9z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.1-5.5c-2.2 1.5-5 2.3-8.8 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>
+    Dejar mi reseña en Google
+  </a>
+  <p class="nota">No necesitas mencionar tu procedimiento; puedes compartir únicamente cómo te sentiste con la atención.</p>
+</section>
+
+<footer>Consultorio 728, Piso 7 · Prados Providencia, Guadalajara</footer>
+</main>
+
+<script>
+window.SURVEY_CONFIG = {
+  tratamiento: 'labioplastia',
+  submitUrl: '',
+  googleReviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJ0_7BGNCvKIQR3kuCuLhaA7U',
+  logoUrl: '',
+  alertWhen: (r) =>
+    ['Tengo algunas molestias','Me gustaría que me contactaran'].includes(r.recuperacion) ||
+    (r.experiencia && r.experiencia <= 3) ||
+    (r.recomendacion !== undefined && r.recomendacion <= 6)
+};
+</script>
+<script src="survey.js"></script>
+</body>
+</html>
