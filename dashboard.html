@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard Encuestas · Dr. Gabriel Morales</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f7f3f5;color:#2b2430}.w{max-width:1100px;margin:auto;padding:24px}.c{background:#fff;border:1px solid #eadfe6;border-radius:16px;padding:16px;margin-bottom:16px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.v{font-size:28px;font-weight:700}.mut{color:#766b77}.hide{display:none}.login{max-width:430px;margin:12vh auto}input,select,button{padding:11px;border-radius:10px;border:1px solid #d8cbd3;font:inherit}button{background:#7a2e63;color:#fff;border:0;font-weight:700;cursor:pointer}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:14px}.tw{overflow:auto}@media(max-width:800px){.g{grid-template-columns:1fr 1fr}table{min-width:850px}}
+</style>
+</head><body><div class="w">
+<section id="login" class="c login">
+<h2>Dashboard de encuestas</h2>
+<p class="mut">Acceso autorizado para Soluciones Médicas Integral</p>
+<input id="email" type="email" value="solucionesmedicasintegral@gmail.com" readonly style="width:100%;box-sizing:border-box">
+<button id="send" style="width:100%;margin-top:10px">Enviar enlace de acceso</button>
+<p id="msg" class="mut"></p>
+</section>
+<main id="panel" class="hide">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><h1>Experiencia de pacientes</h1><button id="out">Salir</button></div>
+<div class="g">
+<div class="c"><div class="mut">Respuestas</div><div id="t" class="v">0</div></div>
+<div class="c"><div class="mut">Experiencia</div><div id="x" class="v">—</div></div>
+<div class="c"><div class="mut">NPS</div><div id="n" class="v">—</div></div>
+<div class="c"><div class="mut">Alertas</div><div id="a" class="v">0</div></div>
+</div>
+<div class="c"><select id="f"><option value="">Todos</option><option value="labioplastia">Labioplastia</option><option value="fertilidad">Fertilidad</option></select>
+<div class="tw"><table><thead><tr><th>Fecha</th><th>Paciente</th><th>Tratamiento</th><th>Experiencia</th><th>NPS</th><th>Alerta</th><th>Comentario</th></tr></thead><tbody id="r"></tbody></table></div></div>
+</main></div>
+<script>
+const sb=supabase.createClient('https://lzjpxumivquajfunpuwg.supabase.co','sb_publishable_eoAAJrO5V-S0Yn7BNrHXsw_hvHdjNZN');
+const q=i=>document.getElementById(i),esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let D=[];
+function render(){const f=q('f').value,d=D.filter(x=>!f||x.tratamiento===f);q('t').textContent=d.length;const ex=d.map(x=>Number(x.experiencia)).filter(Number.isFinite);q('x').textContent=ex.length?(ex.reduce((a,b)=>a+b,0)/ex.length).toFixed(1)+'/5':'—';const ns=d.map(x=>Number(x.nps)).filter(Number.isFinite);q('n').textContent=ns.length?Math.round(ns.filter(v=>v>=9).length/ns.length*100-ns.filter(v=>v<=6).length/ns.length*100):'—';q('a').textContent=d.filter(x=>x.alerta).length;q('r').innerHTML=d.map(x=>'<tr><td>'+esc(new Date(x.created_at).toLocaleString('es-MX'))+'</td><td>'+esc(x.nombre||'—')+'</td><td>'+esc(x.tratamiento||'—')+'</td><td>'+esc(x.experiencia??'—')+'</td><td>'+esc(x.nps??'—')+'</td><td>'+(x.alerta?'Revisar':'OK')+'</td><td>'+esc(x.comentario||'—')+'</td></tr>').join('')}
+async function load(){const {data:{session}}=await sb.auth.getSession();if(!session)return;q('login').classList.add('hide');q('panel').classList.remove('hide');const {data,error}=await sb.from('encuestas_gabriel').select('created_at,nombre,tratamiento,experiencia,nps,alerta,comentario').order('created_at',{ascending:false});if(error){q('panel').innerHTML='<div class="c">No se pudieron cargar los datos.</div>';return}D=data||[];render()}
+q('send').onclick=async()=>{q('msg').textContent='Enviando…';const {error}=await sb.auth.signInWithOtp({email:'solucionesmedicasintegral@gmail.com',options:{emailRedirectTo:location.origin+location.pathname}});q('msg').textContent=error?'No se pudo enviar el enlace: '+error.message:'Listo. Revisa el correo y abre el enlace de acceso.'};
+q('f').onchange=render;q('out').onclick=async()=>{await sb.auth.signOut();location.reload()};sb.auth.onAuthStateChange(()=>load());load();
+</script></body></html>
