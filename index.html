@@ -7,6 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+.identifica{margin:0 0 18px;padding:16px;border:1px solid #eadfe6;border-radius:16px;background:#fff}
+.identifica label{display:block;font-weight:600;margin-bottom:8px}
+.identifica input{width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #d9cbd4;border-radius:12px;font:inherit}
+.aviso{font-size:13px;color:#766b77;margin:8px 0 0}
+.btn.disabled{opacity:.5;pointer-events:none}
+</style>
 </head>
 <body>
 <main class="app home">
@@ -18,18 +25,24 @@
   <h1 id="titulo">Queremos conocer tu experiencia</h1>
   <p class="intro">Selecciona el procedimiento o proceso en el que te atendimos. La encuesta es breve y nos ayuda a seguir mejorando nuestra atención.</p>
 
+  <section id="identifica" class="identifica">
+    <label for="nombre">Antes de continuar, escribe tu nombre</label>
+    <input id="nombre" type="text" placeholder="Nombre y apellido" autocomplete="name">
+    <p class="aviso">Usaremos este dato únicamente para identificar tu respuesta.</p>
+  </section>
+
   <section class="home-card">
     <span class="badge">Post procedimiento</span>
     <h2>Labioplastia</h2>
     <p>Cuéntanos cómo fue tu experiencia, recuperación y atención por parte del equipo.</p>
-    <a class="btn" id="labio" href="labioplastia.html">Responder encuesta</a>
+    <a class="btn disabled" id="labio" href="#">Responder encuesta</a>
   </section>
 
   <section class="home-card">
     <span class="badge">Acompañamiento</span>
     <h2>Fertilidad</h2>
     <p>Cuéntanos cómo fue tu experiencia, acompañamiento, claridad y seguimiento durante tu proceso.</p>
-    <a class="btn" id="fert" href="fertilidad.html">Responder encuesta</a>
+    <a class="btn disabled" id="fert" href="#">Responder encuesta</a>
   </section>
 
   <footer>Gracias por tu confianza · Dr. Gabriel Morales</footer>
@@ -39,13 +52,23 @@
 const p=new URLSearchParams(location.search);
 const n=p.get('n')||'';
 const lead=p.get('lead')||'';
-if(n) document.getElementById('titulo').textContent='Hola '+n+', queremos conocer tu experiencia';
-const qs=new URLSearchParams();
-if(n) qs.set('n',n);
-if(lead) qs.set('lead',lead);
-const suffix=qs.toString()?'?'+qs.toString():'';
-document.getElementById('labio').href='labioplastia.html'+suffix;
-document.getElementById('fert').href='fertilidad.html'+suffix;
+const nombre=document.getElementById('nombre');
+if(n){nombre.value=n;document.getElementById('titulo').textContent='Hola '+n+', queremos conocer tu experiencia';}
+function actualizar(){
+  const nom=nombre.value.trim();
+  const qs=new URLSearchParams();
+  if(nom) qs.set('n',nom);
+  if(lead) qs.set('lead',lead);
+  const suffix=qs.toString()?'?'+qs.toString():'';
+  const activo=nom.length>=2;
+  for(const [id,file] of [['labio','labioplastia.html'],['fert','fertilidad.html']]){
+    const a=document.getElementById(id);
+    a.href=activo?file+suffix:'#';
+    a.classList.toggle('disabled',!activo);
+  }
+}
+nombre.addEventListener('input',actualizar);
+actualizar();
 </script>
 </body>
 </html>
