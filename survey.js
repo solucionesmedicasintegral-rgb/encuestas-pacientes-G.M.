@@ -5,6 +5,7 @@
   const NOMBRE_COMPLETO = (qs.get('n') || '').trim();
   const NOMBRE = NOMBRE_COMPLETO.split(' ')[0] || '';
   const R = {};
+  const TRACKING_TOKEN = (crypto && crypto.randomUUID) ? crypto.randomUUID() : ('gm-' + Date.now() + '-' + Math.random().toString(36).slice(2));
   const pasos = [...document.querySelectorAll('.paso')];
   const TOTAL = pasos.length - 1;
   let actual = 0;
@@ -22,7 +23,23 @@
   }
 
   const btnGoogle = document.getElementById('btnGoogle');
-  if (btnGoogle && CONFIG.googleReviewUrl) btnGoogle.href = CONFIG.googleReviewUrl;
+  if (btnGoogle && CONFIG.googleReviewUrl) {
+    btnGoogle.href = CONFIG.googleReviewUrl;
+    btnGoogle.addEventListener('click', () => {
+      if (!CONFIG.submitUrl || !CONFIG.supabaseAnonKey) return;
+      const rpcUrl = CONFIG.submitUrl.replace('/rest/v1/encuestas_gabriel','/rest/v1/rpc/mark_google_review_clicked');
+      fetch(rpcUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: CONFIG.supabaseAnonKey,
+          Authorization: 'Bearer ' + CONFIG.supabaseAnonKey
+        },
+        body: JSON.stringify({ p_token: TRACKING_TOKEN }),
+        keepalive: true
+      }).catch(() => {});
+    });
+  }
 
   const ETQ = ['', 'Muy mala', 'Mala', 'Regular', 'Buena', 'Excelente'];
 
@@ -115,7 +132,8 @@
       alerta: !!payload.alerta,
       respuestas: payload.respuestas || {},
       origen: payload.origen || 'kommo',
-      enviado_en: payload.enviado || new Date().toISOString()
+      enviado_en: payload.enviado || new Date().toISOString(),
+      tracking_token: TRACKING_TOKEN
     };
 
     const headers = {
