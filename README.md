@@ -21,3 +21,6 @@ Las encuestas aceptan:
 
 Ejemplo:
 `labioplastia.html?lead=123456&n=Ana`
+
+
+<!-- Deploy refresh: Supabase integration -->
