@@ -42,6 +42,26 @@
   }
 
   const ETQ = ['', 'Muy mala', 'Mala', 'Regular', 'Buena', 'Excelente'];
+  const fin = document.querySelector('.paso.fin');
+  if (fin && btnGoogle) {
+    const titulo = fin.querySelector('#gracias');
+    const intro = fin.querySelector('.intro');
+    const nota = fin.querySelector('.nota');
+    const reviewText = fin.querySelector('p[style*="margin-top"]');
+    if (titulo) titulo.textContent = '¡Gracias por compartir tu experiencia!';
+    if (intro) intro.textContent = 'Tu respuesta ya quedó registrada. Nos ayuda mucho a seguir mejorando nuestra atención.';
+    if (reviewText) reviewText.textContent = 'Un último favor: ¿nos ayudas compartiendo tu experiencia en Google? Tu reseña puede ayudar a otras pacientes a sentirse más seguras al elegir su atención.';
+    btnGoogle.textContent = '⭐ Dejar mi reseña en Google';
+    btnGoogle.style.fontSize = '17px';
+    btnGoogle.style.padding = '16px 18px';
+    btnGoogle.style.marginTop = '14px';
+    btnGoogle.style.display = 'block';
+    btnGoogle.style.textAlign = 'center';
+    if (nota) nota.textContent = CONFIG.tratamiento === 'labioplastia'
+      ? 'No necesitas mencionar tu procedimiento; puedes compartir únicamente cómo te sentiste con la atención.'
+      : 'No necesitas compartir detalles personales de tu tratamiento; puedes hablar únicamente de la atención recibida.';
+  }
+
 
   function ir(n) {
     pasos[actual].classList.remove('activo');
